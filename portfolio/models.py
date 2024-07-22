@@ -1,11 +1,10 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Portfolio(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
-    phone_number = models.CharField(max_length=15, null=True, blank=True)
     email = models.EmailField(max_length=50, null=True, blank=True)
     website = models.CharField(max_length=100, null=True, blank=True)
     resume = models.FileField()
@@ -20,5 +19,12 @@ class Portfolio(models.Model):
 
 
 class Skill(models.Model):
-    name
-    progress
+    name = models.CharField(max_length=50, null=True, blank=True)
+    progress = models.IntegerField(default=0, validators=[
+        MinValueValidator(0),
+        MaxValueValidator(100)
+    ])
+
+
+class Socials(models.Model):
+    pass
