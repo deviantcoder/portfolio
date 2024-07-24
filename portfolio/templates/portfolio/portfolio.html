@@ -1,0 +1,292 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="subtitle">Hey there, I'm</h1>
+      <h2 class="title">{{ portfolio.name }}</h2>
+      <h1 class="subtitle profession">backend developer</h1>
+    </div>
+  </div>
+  <!-- End Hero Content-->
+  <!-- Begin Hero Menu -->
+  <div class="hero-foot ">
+    <div class="hero-foot--wrapper">
+      <div class="columns">
+        <div class="column is-12 hero-menu-desktop has-text-centered is-fixed-top">
+          <ul>
+            <li class="is-active">
+              <a href="#home">Home</a>
+            </li>
+            <li>
+              <a href="#about-me">About Me</a>
+            </li>
+            <li>
+              <a href="#services">Services</a>
+            </li>
+            <li>
+              <a href="#skills">Skills</a>
+            </li>
+            <li>
+              <a href="#my-work">My Work</a>
+            </li>
+            <li>
+              <a href="#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Hero Menu -->
+</section>
+<!-- End Hero -->
+</div>
+<!-- End Header -->
+
+<!-- Begin Main Content -->
+<div class="main-content">
+<!-- Begin About Me Section -->
+<div class="section-light about-me" id="about-me">
+  <div class="container">
+    <div class="column is-12 about-me">
+      <h1 class="title has-text-centered section-title">About Me</h1>
+    </div>
+    <div class="columns is-multiline">
+      <div
+        class="column is-6 has-vertically-aligned-content"
+        data-aos="fade-right"
+      >
+        <p class="is-larger">
+          &emsp;&emsp;<strong
+            >{{ portfolio.bio }}</strong
+          >
+        </p>
+        <br />
+        <hr>
+        
+        <br />
+        <div class="is-divider"></div>
+        <div class="columns about-links">
+          <div class="column">
+            <p class="heading">
+              <strong>Email</strong>
+            </p>
+            <p class="subheading">
+              {{ portfolio.email }}
+            </p>
+          </div>
+          <div class="column">
+            <p class="heading">
+              <strong>View my portfolio</strong>
+            </p>
+            <p class="subheading">
+              {{ portfolio.github }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column is-6 right-image " data-aos="fade-left">
+        <img
+          class="is-rounded"
+          src="https://picsum.photos/id/366/600/375"
+          alt=""
+        />
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End About Me Content -->
+<div class="section-dark resume">
+  <div class="container">
+    <div
+      class="columns is-multiline"
+      data-aos="fade-in"
+      data-aos-easing="linear"
+    >
+      <div class="column is-12 about-me">
+        <h1 class="title has-text-centered section-title">
+          View My Resume
+        </h1>
+      </div>
+      <div class="column is-10 has-text-centered is-offset-1">
+        <h2 class="subtitle">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et doloremagna aliqua
+        </h2>
+        <form action="example.docs">
+          <button class="button">
+            Download Resume&emsp;<i class="fad fa-download fa-lg"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Begin Skills Content -->
+<div class="section-light skills" id="skills">
+  <div class="container">
+    <div class="columns is-multiline is-centered">
+      <div class="column is-12 about-me">
+        <h1 class="title has-text-centered section-title">Skills</h1>
+      </div>
+      <div
+        class="column is-6"
+        data-aos="fade-in"
+        data-aos-easing="linear"
+      >
+
+      {% for skill in skills %}
+        <h1>{{ skill }}</h1>
+        <progress class="progress" value="{{ skill.progress }}" max="100"></progress>
+      {% endfor %}
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- End Skills Content -->
+<!-- Begin Work Content -->
+<div class="section-dark my-work" id="my-work">
+  <div class="container">
+    <div
+      class="columns is-multiline"
+      data-aos="fade-in"
+      data-aos-easing="linear"
+    >
+      <div class="column is-12">
+        <h1 class="title has-text-centered section-title">My Work</h1>
+      </div>
+      <div class="column is-3">
+        <a href="#">
+          <figure
+            class="image is-2by1 work-item"
+            style="background-image: url('https://picsum.photos/320/180?image=0');"
+          ></figure>
+        </a>
+      </div>
+      <div class="column is-3">
+        <a href="#">
+          <figure
+            class="image is-2by1 work-item"
+            style="background-image: url('https://picsum.photos/320/180?image=10');"
+          ></figure>
+        </a>
+      </div>
+      <div class="column is-3">
+        <a href="#">
+          <figure
+            class="image is-2by1 work-item"
+            style="background-image: url('https://picsum.photos/320/180?image=20');"
+          ></figure>
+        </a>
+      </div>
+      <div class="column is-3">
+        <a href="#">
+          <figure
+            class="image is-2by1 work-item"
+            style="background-image: url('https://picsum.photos/320/180?image=30');"
+          ></figure>
+        </a>
+      </div>
+      <div class="column is-3">
+        <a href="#">
+          <figure
+            class="image is-2by1 work-item"
+            style="background-image: url('https://picsum.photos/320/180?image=40');"
+          ></figure>
+        </a>
+      </div>
+      <div class="column is-3">
+        <a href="#">
+          <figure
+            class="image is-2by1 work-item"
+            style="background-image: url('https://picsum.photos/320/180?image=50');"
+          ></figure>
+        </a>
+      </div>
+      <div class="column is-3">
+        <a href="#">
+          <figure
+            class="image is-2by1 work-item"
+            style="background-image: url('https://picsum.photos/320/180?image=60');"
+          ></figure>
+        </a>
+      </div>
+      <div class="column is-3">
+        <a href="#">
+          <figure
+            class="image is-2by1 work-item"
+            style="background-image: url('https://picsum.photos/320/180?image=70');"
+          ></figure>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Work Content -->
+<!-- Begin Contact Content -->
+<div class="section-light contact" id="contact">
+  <div class="container">
+    <div
+      class="columns is-multiline"
+      data-aos="fade-in-up"
+      data-aos-easing="linear"
+    >
+      <div class="column is-12 about-me">
+        <h1 class="title has-text-centered section-title">
+          Get in touch
+        </h1>
+      </div>
+      <div class="column is-8 is-offset-2">
+        
+        
+        <form method="POST">
+
+        {% csrf_token %}
+
+        {% for field in form %}
+
+          <div class="field">
+            <label class="label">{{ field.label }}</label>
+            <div class="control has-icons-left">
+              {{ field }}
+             
+                {% if field.name == 'name' %}
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                  </span>
+                {% elif field.name == 'email' %}
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                {% endif %}
+
+              </span>
+            </div>
+          </div>
+
+          {% endfor %}
+
+          <div class="field">
+            <div class="control ">
+              <button class="button submit-button">
+                Send&nbsp;&nbsp;
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Contact Content -->
+</div>
+<!-- End Main Content -->
+    
+{% endblock content %}

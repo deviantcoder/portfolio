@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DeviantCoder - Portfolio</title>
+    <!-- Bulma Version 1-->
+    <link rel="stylesheet" href="https://unpkg.com/bulma@1.0.0/css/bulma.min.css" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/showcase.css' %}" />
+    {% comment %} <script
+      src="https://kit.fontawesome.com/2828f7885a.js"
+      integrity="sha384-WAsFbnLEQcpCk8lM1UTWesAf5rGTCvb2Y+8LvyjAAcxK1c3s5c0L+SYOgxvc6PWG"
+      crossorigin="anonymous"
+    ></script> {% endcomment %}
+    <script src= 
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js'> 
+    </script> 
+    <link rel="icon" type="image/png" href="favicon.png" />
+  </head>
+
+  <body>
+
+    <!-- Begin Scroll Up Button -->
+
+    <form action="#home">
+      <button id="toTop" title="Go to top">
+        <i class="fas fa-angle-up"></i>
+      </button>
+    </form>
+    <!-- End Scroll Up Button -->
+
+    <!-- Begin Header -->
+    <div class="header-wrapper" id="home">
+      <!-- Begin Hero -->
+      <section class="hero is-medium">
+        <!-- Begin Mobile Nav -->
+        
+        {% include 'navbar.html' %}
+
+        <!-- End Mobile Nav -->
+        <!-- Begin Hero Content-->
+        
+
+        {% block content %}
+          
+        {% endblock content %}
+
+
+    <!-- Begin Footer -->
+    <div class="footer">
+      <p>
+        <strong class="white">Bulma</strong> by <a href="http://jgthms.com">Jeremy Thomas</a>.
+        The source code is licensed
+        <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content is licensed
+        <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+      </p>
+    </div>
+    <!-- End Footer -->
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../js/showcase.js"></script>
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        easing: "ease-out",
+        duration: 800,
+      });
+    </script>
+  </body>
+</html>
