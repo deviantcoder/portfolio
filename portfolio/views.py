@@ -1,6 +1,6 @@
 import requests
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Portfolio, Message
+from .models import Portfolio, Message, Project
 from .forms import MessageForm
 from django.core.mail import send_mail
 from django.contrib import messages
@@ -14,19 +14,15 @@ def index(request):
     form = MessageForm()
     if request.method == 'POST':
         send_message(request)
-        
 
-    github_url = 'https://api.github.com/users/deviantcoder/repos'
-
-    # repos = requests.get(github_url).json()
-
-    print(settings.EMAIL_HOST_USER)
-    print(settings.EMAIL_HOST_PASSWORD)
+    github_repos = get_github_repos()
+    print()
 
     context = {
         'portfolio': portfolio,
         'skills': skills,
         'form': form,
+        'github_repos': github_repos,
     }
 
     return render(request, 'portfolio/portfolio.html', context)
@@ -46,3 +42,38 @@ def send_message(request):
         )
 
         return redirect('/')
+
+
+def get_github_repos():
+    url = 'https://api.github.com/users/deviantcoder/repos'
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        github_repos = response.json()
+
+    except requests.RequestException as e:
+        print(f'Error fetching GitHub repos: {e}')
+        return []
+
+    repos = []
+
+    for repo in github_repos:
+        project, status = Project.objects.get_or_create(
+            name=repo['name'],
+            defaults={
+                'url': repo['url'],
+                'description': repo['description'],
+            }
+        )
+
+        existing_project = {
+            'name': project.name,
+            'url': project.url,
+            'description': project.description,
+        }
+
+        repos.append(existing_project)
+
+    return repos
+    

@@ -23,9 +23,6 @@
               <a href="#about-me">About Me</a>
             </li>
             <li>
-              <a href="#services">Services</a>
-            </li>
-            <li>
               <a href="#skills">Skills</a>
             </li>
             <li>
@@ -112,12 +109,11 @@
       </div>
       <div class="column is-10 has-text-centered is-offset-1">
         <h2 class="subtitle">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et doloremagna aliqua
+          Discover more about my skills and experience. Download my resume for a detailed overview.
         </h2>
         <form action="example.docs">
           <button class="button">
-            Download Resume&emsp;<i class="fad fa-download fa-lg"></i>
+            Download&emsp;<i class="fad fa-download fa-lg"></i>
           </button>
         </form>
       </div>
@@ -159,54 +155,9 @@
       <div class="column is-12">
         <h1 class="title has-text-centered section-title">My Work</h1>
       </div>
-      <div class="column is-3">
-        <a href="#">
-          <figure
-            class="image is-2by1 work-item"
-            style="background-image: url('https://picsum.photos/320/180?image=0');"
-          ></figure>
-        </a>
-      </div>
-      <div class="column is-3">
-        <a href="#">
-          <figure
-            class="image is-2by1 work-item"
-            style="background-image: url('https://picsum.photos/320/180?image=10');"
-          ></figure>
-        </a>
-      </div>
-      <div class="column is-3">
-        <a href="#">
-          <figure
-            class="image is-2by1 work-item"
-            style="background-image: url('https://picsum.photos/320/180?image=20');"
-          ></figure>
-        </a>
-      </div>
-      <div class="column is-3">
-        <a href="#">
-          <figure
-            class="image is-2by1 work-item"
-            style="background-image: url('https://picsum.photos/320/180?image=30');"
-          ></figure>
-        </a>
-      </div>
-      <div class="column is-3">
-        <a href="#">
-          <figure
-            class="image is-2by1 work-item"
-            style="background-image: url('https://picsum.photos/320/180?image=40');"
-          ></figure>
-        </a>
-      </div>
-      <div class="column is-3">
-        <a href="#">
-          <figure
-            class="image is-2by1 work-item"
-            style="background-image: url('https://picsum.photos/320/180?image=50');"
-          ></figure>
-        </a>
-      </div>
+
+      {% for repo in github_repos %}
+      
       <div class="column is-3">
         <a href="#">
           <figure
@@ -214,15 +165,11 @@
             style="background-image: url('https://picsum.photos/320/180?image=60');"
           ></figure>
         </a>
+        <h3 class="has-text-centered">{{ repo.name }}</h3>
       </div>
-      <div class="column is-3">
-        <a href="#">
-          <figure
-            class="image is-2by1 work-item"
-            style="background-image: url('https://picsum.photos/320/180?image=70');"
-          ></figure>
-        </a>
-      </div>
+
+      {% endfor %}
+
     </div>
   </div>
 </div>

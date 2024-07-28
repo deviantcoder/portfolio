@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Portfolio, Skill, Socials, Message
+from .models import Portfolio, Skill, Socials, Message, Project
 
 class SkillInline(admin.StackedInline):
     model = Skill
@@ -29,3 +29,6 @@ class MessageAdmin(admin.ModelAdmin):
         'name',
         'email'
     )
+
+
+admin.site.register(Project)
