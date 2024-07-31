@@ -1,22 +1,18 @@
 {% load static %}
 
 <nav class="navbar is-fixed-top has-background-dark">
-  <!-- Begin Burger Menu -->
   <div class="navbar-brand">
     <div class="navbar-burger burger" data-target="mobile-nav">
       <span></span>
       <span></span>
       <span></span>
     </div>
+    <a class="navbar-item navbar-center" href="/">
+      <h6 class="title" style="font-size: 27px;">DeviantCoder</h6>
+    </a>
   </div>
-  <!-- End Burger Menu -->
   <div id="mobile-nav" class="navbar-menu">
     <div class="navbar-end">
-      <div class="navbar-item">
-        <a class="navbar-item" href="/">
-          DeviantCoder
-        </a>
-      </div>
       <div class="navbar-item">
         <a class="navbar-item" href="#home">
           Home
@@ -43,59 +39,17 @@
         </a>
       </div>
       {% if request.user.username == 'admin' %}
-            <div class="navbar-item">
-              <a class="navbar-item button submit-button" href="{% url 'logout' %}">
-                Logout
-              </a>
-            </div>
+        <div class="navbar-item">
+          <a class="navbar-item button submit-button" href="{% url 'logout' %}">
+            Logout
+          </a>
+        </div>
       {% endif %}
     </div>
   </div>
 </nav>
 
-{% comment %} <nav class="navbar is-fixed-top has-background-dark">
-    <!-- Begin Burger Menu -->
-    <div class="navbar-brand">
-      <div class="navbar-burger burger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-    <!-- End Burger Menu -->
-    <div id="mobile-nav" class="navbar-menu">
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <a class="navbar-item" href="/">
-            Home
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="navbar-item" href="#about-me">
-            About Me
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="navbar-item" href="#skills">
-            Skills
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="navbar-item" href="#my-work">
-            My Work
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a class="navbar-item" href="#contact">
-            Contact
-          </a>
-        </div>
 
-        
-        
-      </div>
-    </div>
-  </nav> {% endcomment %}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="{% static 'js/showcase.js' %}"></script>

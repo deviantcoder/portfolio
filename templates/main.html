@@ -41,6 +41,28 @@
         
         {% include 'navbar.html' %}
 
+        {% if messages %}
+        {% for message in messages %}
+
+            {% if forloop.counter == 1 %}
+            <div class='container has-text-centered' style="margin-top: 70px;">
+            {% else %}
+            <div class='container has-text-centered' style="margin-top: 10px;">
+            {% endif %}
+                <div class='columns is-mobile is-centered'>
+                    <div class='column is-4'> 
+                        <div class="notification is-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
+                            <button class="delete"></button>
+                            {{ message }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        {% endfor %}
+        {% endif %}
+
         <!-- End Mobile Nav -->
         <!-- Begin Hero Content-->
         
@@ -67,10 +89,15 @@
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
     <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
     <script>
-      AOS.init({
-        easing: "ease-out",
-        duration: 800,
-      });
-    </script>
+      document.addEventListener('DOMContentLoaded', () => {
+          (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+            const $notification = $delete.parentNode;
+        
+            $delete.addEventListener('click', () => {
+              $notification.parentNode.removeChild($notification);
+            });
+          });
+        });
+  </script>
   </body>
 </html>

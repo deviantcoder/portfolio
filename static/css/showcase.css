@@ -340,3 +340,37 @@ body.preloader-site {
 
 .white
 {color:ghostwhite}
+
+
+/* CUSTOM CSS */
+
+.navbar {
+  position: relative;
+}
+
+.navbar .navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px; /* Задайте высоту навигационной панели */
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.navbar-burger {
+  margin-right: 10px; /* При необходимости добавьте отступ для бургер-меню */
+}

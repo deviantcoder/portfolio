@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import PortfolioForm
+from django.contrib import messages
 
 
 def index(request):
@@ -17,9 +18,9 @@ def index(request):
     form = MessageForm()
     if request.method == 'POST':
         send_message(request)
+        return redirect('/')
 
     github_repos = get_github_repos()
-    print()
 
     context = {
         'portfolio': portfolio,
@@ -44,11 +45,11 @@ def send_message(request):
             fail_silently=False
         )
 
-        return redirect('/')
+        messages.success(request, 'Message was sent')
 
 
 def get_github_repos():
-    url = 'https://api.github.com/users/deviantcoder/repos'
+    url = settings.GITHUB_URL
 
     try:
         response = requests.get(url)
