@@ -5,6 +5,9 @@ from .forms import MessageForm
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.conf import settings
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from .forms import PortfolioForm
 
 
 def index(request):
@@ -77,3 +80,25 @@ def get_github_repos():
 
     return repos
     
+
+def logout_user(request):
+    logout(request)
+    return redirect('/')
+
+
+@login_required(login_url='/')
+def edit_portfolio(request):
+    portfolio = Portfolio.objects.first()
+    form = PortfolioForm(instance=portfolio)
+
+    if request.method == 'POST':
+        form = PortfolioForm(request.POST, instance=portfolio)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'portfolio/portfolio_form.html', context)

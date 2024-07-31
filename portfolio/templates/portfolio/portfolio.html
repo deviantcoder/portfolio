@@ -2,11 +2,13 @@
 
 {% block content %}
 
+{% load static %}
+
 <div class="hero-body">
     <div class="container has-text-centered">
       <h1 class="subtitle">Hey there, I'm</h1>
       <h2 class="title">{{ portfolio.name }}</h2>
-      <h1 class="subtitle profession">backend developer</h1>
+      <h1 class="subtitle profession">a backend developer</h1>
     </div>
   </div>
   <!-- End Hero Content-->
@@ -48,7 +50,9 @@
 <div class="section-light about-me" id="about-me">
   <div class="container">
     <div class="column is-12 about-me">
-      <h1 class="title has-text-centered section-title">About Me</h1>
+      <h1 class="title has-text-centered section-title">About Me <a href="{% url 'edit_portfolio' %}">
+        <i class="fas fa-edit fa-sm"></i>
+      </a></h1>
     </div>
     <div class="columns is-multiline">
       <div
@@ -113,7 +117,7 @@
         </h2>
         <form action="example.docs">
           <button class="button">
-            Download&emsp;<i class="fad fa-download fa-lg"></i>
+            Download&emsp;<i class="fas fa-download fa-lg"></i>
           </button>
         </form>
       </div>
@@ -162,7 +166,7 @@
         <a href="#">
           <figure
             class="image is-2by1 work-item"
-            style="background-image: url('https://picsum.photos/320/180?image=60');"
+            style="background-image: url('{% static "images/github_repo.png" %}'); background-position: center;"
           ></figure>
         </a>
         <h3 class="has-text-centered">{{ repo.name }}</h3>
