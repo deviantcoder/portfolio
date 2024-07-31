@@ -135,7 +135,7 @@ EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD'))
 # GitHub URL
 
 GITHUB_URL = 'https://api.github.com/users/deviantcoder/repos'
-
+GITHUB_TOKEN = str(os.getenv('GITHUB_TOKEN'))
 
 
 # Static files (CSS, JavaScript, Images)

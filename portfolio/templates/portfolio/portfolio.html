@@ -134,13 +134,7 @@
   <div class="container">
     <div class="columns is-multiline is-centered">
       <div class="column is-12 about-me">
-        <h1 class="title has-text-centered section-title">Skills
-          {% if request.user.is_authenticated %}
-          <a href="">
-            <i class="fas fa-edit fa-sm"></i>
-          </a>
-          {% endif %}
-        </h1>
+        <h1 class="title has-text-centered section-title">Skills</h1>
       </div>
       <div
         class="column is-6"
@@ -149,13 +143,31 @@
       >
 
       {% for skill in skills %}
-        <h1>{{ skill }}</h1>
+        <h1>
+          {{ skill }}
+          {% if request.user.is_authenticated %}
+            <a href="{% url 'edit_skill' skill.id %}" class="button">
+              <i class="fas fa-edit fa-sm"></i>
+            </a>
+            <a href="{% url 'delete_skill' skill.id %}" class="button">
+              <i class="fas fa-trash fa-sm"></i>
+            </a>
+          {% endif %}
+        </h1>
         <progress class="progress" value="{{ skill.progress }}" max="100"></progress>
       {% endfor %}
       </div>
-      
     </div>
   </div>
+
+  {% if request.user.is_authenticated %}
+    <div class="has-text-centered mt-5">
+      <a href="{% url 'add_skill' %}" class="button">
+        <i class="fas fa-plus fa-sm"></i>
+      </a>
+    </div>
+  {% endif %}
+
 </div>
 <!-- End Skills Content -->
 <!-- Begin Work Content -->
@@ -170,7 +182,7 @@
         <h1 class="title has-text-centered section-title">My Work</h1>
       </div>
 
-      {% for repo in github_repos %}
+      {% for repo in visible_github_repos %}
       
       <div class="column is-3">
         <a href="{{ repo.url }}">
@@ -181,7 +193,7 @@
         </a>
         <h3 class="has-text-centered">{{ repo.name }}
           {% if request.user.is_authenticated %}
-          | <a href="{% url 'hide_project' repo.id %}"><i class="fas fa-eye-slash"></i></a></h3>
+          | <a href="{% url 'hide_unhide_project' repo.id %}"><i class="fas fa-eye-slash"></i></a></h3>
           {% endif %}
       </div>
 
@@ -189,6 +201,21 @@
 
     </div>
   </div>
+  {% if request.user.is_authenticated %}
+  <hr>
+  <div class="has-text-centered">
+    <h3 class="mb-5"><b>Invisible GitHub repos:</b></h3>
+    {% for repo in invisible_github_repos %}
+    
+      <h3 class="has-text-centered">{{ repo.name }}
+        {% if request.user.is_authenticated %}
+        | <a href="{% url 'hide_unhide_project' repo.id %}"><i class="fas fa-eye"></i></a></h3>
+        {% endif %}
+
+    {% endfor %}
+    {% endif %}
+  </div>
+
 </div>
 <!-- End Work Content -->
 <!-- Begin Contact Content -->

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Message, Portfolio
+from .models import Message, Portfolio, Skill
 
 
 class MessageForm(forms.ModelForm):
@@ -35,5 +35,19 @@ class PortfolioForm(forms.ModelForm):
             }),
             'github': forms.TextInput(attrs={
                 'class': 'input', 'placeholder': 'GitHub Link', 'name': 'github'
+            }),
+        }
+
+
+class SkillForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        fields = '__all__'
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'input', 'placeholder': 'Title'
+            }),
+            'progress': forms.NumberInput(attrs={
+                'class': 'input', 'placeholder': 'Progress'
             }),
         }

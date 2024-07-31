@@ -1,6 +1,6 @@
 import requests
 from .models import Portfolio, Message, Project, Skill
-from .forms import MessageForm, PortfolioForm
+from .forms import MessageForm, PortfolioForm, SkillForm
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.conf import settings
@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, Http404
+from django.utils import timezone
 
 
 def index(request):
@@ -20,13 +21,15 @@ def index(request):
         send_message(request)
         return redirect('/')
 
-    github_repos = get_github_repos()
+    visible_github_repos = get_github_repos().filter(visible=True)
+    invisible_github_repos = get_github_repos().filter(visible=False)
 
     context = {
         'portfolio': portfolio,
         'skills': skills,
         'form': form,
-        'github_repos': github_repos,
+        'visible_github_repos': visible_github_repos,
+        'invisible_github_repos': invisible_github_repos,
     }
 
     return render(request, 'portfolio/portfolio.html', context)
@@ -49,29 +52,37 @@ def send_message(request):
 
 
 def get_github_repos():
-    url = settings.GITHUB_URL
+    if Project.objects.exists() and time_delta():
+        url = settings.GITHUB_URL
+        headers = {
+            'Authorization': f'token {settings.GITHUB_TOKEN}'
+        }
 
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        github_repos = response.json()
+        try:
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            github_repos = response.json()
+        except requests.RequestException as e:
+            print(f'Error fetching GitHub repos: {e}')
+            return Project.objects.none()
 
-    except requests.RequestException as e:
-        print(f'Error fetching GitHub repos: {e}')
-        return []
+        for repo in github_repos:
+            project, status = Project.objects.get_or_create(
+                name=repo['name'],
+                defaults={
+                    'url': repo['svn_url'],
+                    'description': repo['description'],
+                }
+            )
 
-    for repo in github_repos:
-        project, status = Project.objects.get_or_create(
-            name=repo['name'],
-            defaults={
-                'url': repo['svn_url'],
-                'description': repo['description'],
-            }
-        )
+    return Project.objects.all()
 
-    repos = Project.objects.filter(visible=True)
 
-    return repos
+def time_delta():
+    project = Project.objects.last()
+    delta = timezone.now() - project.created
+
+    return delta >= timezone.timedelta(days=1)
     
 
 def logout_user(request):
@@ -81,6 +92,7 @@ def logout_user(request):
 
 @login_required(login_url='/')
 def edit_portfolio(request):
+    page_title = 'Edit portfolio info'
     portfolio = Portfolio.objects.first()
     form = PortfolioForm(instance=portfolio)
 
@@ -92,9 +104,10 @@ def edit_portfolio(request):
 
     context = {
         'form': form,
+        'page_title': page_title,
     }
 
-    return render(request, 'portfolio/portfolio_form.html', context)
+    return render(request, 'portfolio/object_form.html', context)
 
 
 def login_admin(request):
@@ -137,11 +150,65 @@ def download_resume(request):
     return response
 
 
-def hide_project(request, pk):
+@login_required(login_url='/')
+def hide_unhide_project(request, pk):
     project = get_object_or_404(Project, id=pk)
     
-    project.visible = False
+    if project.visible:
+        project.visible = False
+    else:    
+        project.visible = True
     project.save()
 
+    return redirect('/')
+
+
+@login_required(login_url='/')
+def add_skill(request):
+    page_title = 'Add Skill'
+    form = SkillForm()
+
+    if request.method == 'POST':
+        form = SkillForm(request.POST)
+        if form.is_valid():
+            skill = form.save()
+            messages.success(request, f'Skill was added: {skill.name}')
+            return redirect('/')
+
+    context = {
+        'page_title': page_title,
+        'form': form,
+    }
+
+    return render(request, 'portfolio/object_form.html', context)
+
+
+@login_required(login_url='/')
+def edit_skill(request, pk):
+    skill = get_object_or_404(Skill, id=pk)
+    page_title = f'Edit Skill: {skill.name}'
+    form = SkillForm(instance=skill)
+
+    if request.method == 'POST':
+        form = SkillForm(request.POST, instance=skill)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Skill was saved')
+            return redirect('/')
+    
+    context = {
+        'page_title': page_title,
+        'form': form,
+    }
+
+    return render(request, 'portfolio/object_form.html', context)
+
+
+@login_required(login_url='/')
+def delete_skill(request, pk):
+    skill = get_object_or_404(Skill, id=pk)
+    skill_name = skill.name
+    skill.delete()
+    messages.info(request, f'Skill was deleted: {skill_name}')
     return redirect('/')
     

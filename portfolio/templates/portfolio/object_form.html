@@ -13,7 +13,7 @@
                             {% csrf_token %}
 
                             <div class="has-text-centered">
-                                <h3>Edit portfolio info</h3>
+                                <h3>{{ page_title }}</h3>
                             </div>
 
                             {% for field in form %}
@@ -22,6 +22,10 @@
                                 <label class="label">{{ field.label }}</label>
                                 <div class="control">
                                     {{ field }}
+
+                                    {% for error in field.errors %}
+                                        <p style="color: red">{{ error }}</p>
+                                    {% endfor %}
                                 </div>
                             </div>
 
