@@ -1,10 +1,6 @@
 from django.contrib import admin
 from .models import Portfolio, Skill, Socials, Message, Project
 
-class SkillInline(admin.StackedInline):
-    model = Skill
-    extra = 1
-
 
 class SocialsInline(admin.StackedInline):
     model = Socials
@@ -14,7 +10,6 @@ class SocialsInline(admin.StackedInline):
 @admin.register(Portfolio)
 class PortfolioAdmin(admin.ModelAdmin):
     inlines = [
-        SkillInline,
         SocialsInline,
     ]
 

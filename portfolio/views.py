@@ -1,19 +1,19 @@
 import requests
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Portfolio, Message, Project
-from .forms import MessageForm
+from .models import Portfolio, Message, Project, Skill
+from .forms import MessageForm, PortfolioForm
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.conf import settings
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import PortfolioForm
-from django.contrib import messages
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import FileResponse, Http404
 
 
 def index(request):
     portfolio = Portfolio.objects.first()
-    skills = portfolio.skill_set.all()
+    skills = Skill.objects.all()
 
     form = MessageForm()
     if request.method == 'POST':
@@ -60,24 +60,16 @@ def get_github_repos():
         print(f'Error fetching GitHub repos: {e}')
         return []
 
-    repos = []
-
     for repo in github_repos:
         project, status = Project.objects.get_or_create(
             name=repo['name'],
             defaults={
-                'url': repo['url'],
+                'url': repo['svn_url'],
                 'description': repo['description'],
             }
         )
 
-        existing_project = {
-            'name': project.name,
-            'url': project.url,
-            'description': project.description,
-        }
-
-        repos.append(existing_project)
+    repos = Project.objects.filter(visible=True)
 
     return repos
     
@@ -93,7 +85,7 @@ def edit_portfolio(request):
     form = PortfolioForm(instance=portfolio)
 
     if request.method == 'POST':
-        form = PortfolioForm(request.POST, instance=portfolio)
+        form = PortfolioForm(request.POST, request.FILES, instance=portfolio)
         if form.is_valid():
             form.save()
             return redirect('/')
@@ -103,3 +95,53 @@ def edit_portfolio(request):
     }
 
     return render(request, 'portfolio/portfolio_form.html', context)
+
+
+def login_admin(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            messages.warning(request, 'User does not exist')
+            return redirect('login_admin')
+        
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Welcome back!')
+            return redirect('/')
+        messages.warning(request, 'Username or password is incorrect')
+        return redirect('login_admin')
+
+    return render(request, 'portfolio/login.html')
+
+
+def download_resume(request):
+    portfolio = Portfolio.objects.first()
+
+    if not portfolio or not portfolio.resume:
+        raise Http404('Resume is not available at the moment :(')
+    
+    file_name = portfolio.resume
+
+    response = FileResponse(portfolio.resume.open('rb'))
+    response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+    
+    return response
+
+
+def hide_project(request, pk):
+    project = get_object_or_404(Project, id=pk)
+    
+    project.visible = False
+    project.save()
+
+    return redirect('/')
+    

@@ -20,7 +20,6 @@ class Portfolio(models.Model):
 
 
 class Skill(models.Model):
-    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     progress = models.IntegerField(default=0, validators=[
         MinValueValidator(0),
@@ -61,6 +60,8 @@ class Project(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     url = models.CharField(max_length=150, null=True, blank=True)
+
+    visible = models.BooleanField(default=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
     id = models.UUIDField(default=uuid4, unique=True, editable=False, primary_key=True)
