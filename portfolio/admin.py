@@ -2,16 +2,9 @@ from django.contrib import admin
 from .models import Portfolio, Skill, Socials, Message, Project
 
 
-class SocialsInline(admin.StackedInline):
-    model = Socials
-    extra = 1
-
-
 @admin.register(Portfolio)
 class PortfolioAdmin(admin.ModelAdmin):
-    inlines = [
-        SocialsInline,
-    ]
+    pass
 
 
 admin.site.register(Skill)
@@ -26,4 +19,10 @@ class MessageAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(Project)
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'visible',
+        'updated',
+    )

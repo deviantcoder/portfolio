@@ -33,8 +33,8 @@ class Skill(models.Model):
 
 
 class Socials(models.Model):
-    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, null=True, blank=True)
-    url = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(max_length=50, null=True)
+    url = models.CharField(max_length=100, null=True)
     id = models.UUIDField(default=uuid4, unique=True, editable=False, primary_key=True)
 
     def __str__(self):
@@ -64,6 +64,7 @@ class Project(models.Model):
     visible = models.BooleanField(default=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True, null=True)
     id = models.UUIDField(default=uuid4, unique=True, editable=False, primary_key=True)
 
     def __str__(self):

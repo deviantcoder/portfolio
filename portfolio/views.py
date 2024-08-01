@@ -1,6 +1,6 @@
 import requests
-from .models import Portfolio, Message, Project, Skill
-from .forms import MessageForm, PortfolioForm, SkillForm
+from .models import Portfolio, Message, Project, Skill, Socials
+from .forms import MessageForm, PortfolioForm, SkillForm, SocialsForm
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.conf import settings
@@ -15,6 +15,7 @@ from django.utils import timezone
 def index(request):
     portfolio = Portfolio.objects.first()
     skills = Skill.objects.all()
+    socials = Socials.objects.all()
 
     form = MessageForm()
     if request.method == 'POST':
@@ -30,6 +31,7 @@ def index(request):
         'form': form,
         'visible_github_repos': visible_github_repos,
         'invisible_github_repos': invisible_github_repos,
+        'socials': socials,
     }
 
     return render(request, 'portfolio/portfolio.html', context)
@@ -140,7 +142,7 @@ def download_resume(request):
     portfolio = Portfolio.objects.first()
 
     if not portfolio or not portfolio.resume:
-        raise Http404('Resume is not available at the moment :(')
+        raise Http404('Resume is not available at the moment')
     
     file_name = portfolio.resume
 
@@ -210,5 +212,54 @@ def delete_skill(request, pk):
     skill_name = skill.name
     skill.delete()
     messages.info(request, f'Skill was deleted: {skill_name}')
+    return redirect('/')
+
+
+@login_required(login_url='/')
+def add_social(request):
+    page_title = 'Add Social'
+    form = SocialsForm()
+    
+    if request.method == 'POST':
+        form = SocialsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Social was added')
+            return redirect('/')
+    
+    context = {
+        'page_title': page_title,
+        'form': form,
+    }
+
+    return render(request, 'portfolio/object_form.html', context)
+
+
+@login_required(login_url='/')
+def edit_social(request, pk):
+    social = get_object_or_404(Socials, id=pk)
+    page_title = f'Edit Social: {social.name}'
+    form = SocialsForm(instance=social)
+
+    if request.method == 'POST':
+        form = SocialsForm(request.POST, instance=social)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Social was saved')
+            return redirect('/')
+    
+    context = {
+        'page_title': page_title,
+        'form': form,
+    }
+
+    return render(request, 'portfolio/object_form.html', context)
+
+
+@login_required(login_url='/')
+def delete_social(request, pk):
+    social = get_object_or_404(Socials, id=pk)
+    social.delete()
+    messages.info(request, 'Social was deleted')
     return redirect('/')
     

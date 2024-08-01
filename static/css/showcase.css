@@ -354,13 +354,6 @@ body.preloader-site {
   transform: translateX(-50%);
 }
 
-.navbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 64px; /* Задайте высоту навигационной панели */
-}
-
 .navbar-brand {
   display: flex;
   align-items: center;
